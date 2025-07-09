@@ -24,13 +24,13 @@ which I need for finishing my Chess Engine.
 
 ### On Linux or macOS:
 ```bash
-g++ bitset_tictactoe.cpp -o tictactoe
-./tictactoe
+g++ -std=c++17 main.cpp -o main
+./main
 ```
 ### On Windows (using g++):
 ```bash
-g++ bitset_tictactoe.cpp -o tictactoe.exe
-tictactoe.exe
+g++ -std=c++17 main.cpp -o main.exe
+main.exe
 ```
 
 ## Possible updates
