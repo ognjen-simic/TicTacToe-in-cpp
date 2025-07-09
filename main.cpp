@@ -117,6 +117,7 @@ int findBestMove(std::bitset<9> xBoard, std::bitset<9> oBoard)
         std::bitset<9> newO = oBoard;
         newO.set(move);
         int score = minimax(xBoard, newO, false);
+        std::cout << "Move " << move << " score: " << score << "\n";
         if (score > bestScore)
         {
             bestScore = score;
@@ -126,10 +127,9 @@ int findBestMove(std::bitset<9> xBoard, std::bitset<9> oBoard)
     return bestMove;
 }
 
-std::unordered_map<std::string, int> moveMap =
-{
+std::unordered_map<std::string, int> moveMap = {
     {"topleft", 0}, {"top", 1}, {"topright", 2},
-    {"left", 3}, {"center", 4}, {"right", 5},
+    {"left", 3},    {"center", 4}, {"right", 5},
     {"bottomleft", 6}, {"bottom", 7}, {"bottomright", 8}
 };
 
@@ -147,7 +147,7 @@ int main()
 
         if (moveMap.find(moveStr) == moveMap.end())
         {
-            std::cout << "Invalid move!\n";
+            std::cout << "Invalid move name!\n";
             continue;
         }
 
@@ -169,13 +169,6 @@ int main()
             break;
         }
 
-        if (getLegalMoves(xBoard, oBoard).empty())
-        {
-            printBoard(xBoard, oBoard);
-            std::cout << "Draw!";
-            break;
-        }
-
         int oMove = findBestMove(xBoard, oBoard);
         oBoard.set(oMove);
 
@@ -184,13 +177,6 @@ int main()
         {
             printBoard(xBoard, oBoard);
             std::cout << "O wins!";
-            break;
-        }
-
-        if (getLegalMoves(xBoard, oBoard).empty())
-        {
-            printBoard(xBoard, oBoard);
-            std::cout << "Draw!";
             break;
         }
     }
