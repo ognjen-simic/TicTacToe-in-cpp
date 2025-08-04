@@ -37,8 +37,3 @@ main.exe
 
 - Alpha-beta pruning algorithm
 - GUI using SFML library
-
-## To keep in mind
-
-The minimax algorithm can sometimes take a longer route if the win is guaranteed in multiple ways.
-This is practically irrelevant so i won`t waste time fixing it.

@@ -51,12 +51,12 @@ char  defWinner(std::bitset<9> xBoard, std::bitset<9> oBoard)
     return '.';
 }
 
-int evaluate(std::bitset<9> xBoard, std::bitset<9> oBoard)
+int evaluate(std::bitset<9> xBoard, std::bitset<9> oBoard, int depth)
 {
     for (int i = 0; i < 8; ++i)
     {
-        if ((xBoard & winPatterns[i]) == winPatterns[i]) return -1;
-        if ((oBoard & winPatterns[i]) == winPatterns[i]) return 1;
+        if ((xBoard & winPatterns[i]) == winPatterns[i]) return -100 + depth;
+        if ((oBoard & winPatterns[i]) == winPatterns[i]) return 100 - depth;
     }
     return 0;
 }
@@ -74,9 +74,9 @@ std::vector<int> getLegalMoves(std::bitset<9> xBoard, std::bitset<9> oBoard)
     return moves;
 }
 
-int minimax (std::bitset<9> xBoard, std::bitset<9> oBoard, bool isOTurn)
+int minimax (std::bitset<9> xBoard, std::bitset<9> oBoard, bool isOTurn, int depth)
 {
-    int score = evaluate(xBoard, oBoard);
+    int score = evaluate(xBoard, oBoard, depth);
     if (score != 0 || getLegalMoves(xBoard, oBoard).empty())
     {
         return score;
@@ -84,24 +84,24 @@ int minimax (std::bitset<9> xBoard, std::bitset<9> oBoard, bool isOTurn)
 
     if (isOTurn)
     {
-        int best = -2;
+        int best = -100;
         for (int move : getLegalMoves(xBoard, oBoard))
         {
             std::bitset<9> newO = oBoard;
             newO.set(move);
-            best = std::max(best, minimax(xBoard, newO, false));
+            best = std::max(best, minimax(xBoard, newO, false, depth + 1));
         }
         return best;
     }
     
     else
     {
-        int best = 2;
+        int best = 100;
         for (int move : getLegalMoves(xBoard, oBoard))
         {
             std::bitset<9> newX = xBoard;
             newX.set(move);
-            best = std::min(best, minimax(newX, oBoard, true));
+            best = std::min(best, minimax(newX, oBoard, true, depth + 1));
         }
         return best;
     }
@@ -109,14 +109,14 @@ int minimax (std::bitset<9> xBoard, std::bitset<9> oBoard, bool isOTurn)
 
 int findBestMove(std::bitset<9> xBoard, std::bitset<9> oBoard)
 {
-    int bestScore = -2;
+    int bestScore = -100;
     int bestMove = -1;
 
     for (int move : getLegalMoves(xBoard, oBoard))
     {
         std::bitset<9> newO = oBoard;
         newO.set(move);
-        int score = minimax(xBoard, newO, false);
+        int score = minimax(xBoard, newO, false, 1);
         std::cout << "Move " << move << " score: " << score << "\n";
         if (score > bestScore)
         {
